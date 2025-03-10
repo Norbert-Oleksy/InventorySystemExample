@@ -1,0 +1,2 @@
+# InventorySystemExample
+ Recruitment task
