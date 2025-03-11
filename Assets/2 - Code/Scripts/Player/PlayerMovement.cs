@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if(TestManager.Instance != null && TestManager.Instance.Stage != TestManager.TestStage.Running) return;
+
         RotatePlayer();
         MovePlayer();
     }
