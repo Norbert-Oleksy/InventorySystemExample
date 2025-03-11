@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 1183574325982794196}
   m_Layer: 0
   m_Name: PlayerPrefab
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -134,6 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseHealthPoints: 100
   _baseMovementSpeed: 5
+  Health: 0
 --- !u!114 &1183574325982794196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,7 +147,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5faeca9407283f45981dfa23a841fd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defoaultSpeed: 5
   _defoaultlookSensitivity: 10
 --- !u!1 &1065761817536346185
 GameObject:

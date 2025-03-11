@@ -1,8 +1,15 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
+    private Coroutine _attack;
+
     #region Inventory
     public List<Item> Items { get; private set; }
     public Dictionary<string, Item> Equipment { get; private set; }
@@ -61,6 +68,46 @@ public class Player : MonoBehaviour
         Items.Add(Equipment[category]);
         Equipment[category] = null;
     }
+
+    public void TakeDamage(int ammount)
+    {
+        Health -= ammount - Defense/10;
+        if(Health < 0) Death();
+    }
+
+    private void Death()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    private void Attack(InputAction.CallbackContext context)
+    {
+        if (TestManager.Instance != null && TestManager.Instance.Stage != TestManager.TestStage.Running) return;
+        if (_attack!=null) return;
+
+        _attack = StartCoroutine(PlayerAttack());
+    }
+
+    private IEnumerator PlayerAttack()
+    {
+        float attackRange = 2f;
+        float attackRadius = 2f;
+
+        Vector3 attackPosition = transform.position + transform.forward * attackRange;
+
+        Collider[] hitColliders = Physics.OverlapSphere(attackPosition, attackRadius);
+        foreach (Collider collider in hitColliders)
+        {
+            Ghost ghost = collider.GetComponent<Ghost>();
+            if (ghost != null)
+            {
+                ghost.TakeDamage(Damage);
+            }
+        }
+
+        yield return new WaitForSeconds(1f);
+        _attack = null;
+    }
     #endregion
 
     #region Unity-API
@@ -84,6 +131,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         TestManager.Instance.OnGameStart += ()=> { Health = MaxHealth; };
+        InputManager.Instance.attack.performed += Attack;
     }
 
     private void OnDisable()
