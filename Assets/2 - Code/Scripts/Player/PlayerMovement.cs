@@ -4,10 +4,10 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float _defoaultSpeed = 5;
     [SerializeField] private float _defoaultlookSensitivity = 100;
 
     private CharacterController _characterController;
+    private Player _player;
     private Vector2 _moveDirection;
     private Vector2 _lookDirection;
 
@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
+        _player = GetComponent<Player>();
     }
 
     private void Update()
@@ -51,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
     private void MovePlayer()
     {
         Vector3 moveVector = transform.right * _moveDirection.x + transform.forward * _moveDirection.y;
-        _characterController.Move(moveVector * Time.deltaTime * _defoaultSpeed);
+        _characterController.Move(moveVector * Time.deltaTime * _player.MovementSpeed);
     }
 
     private void RotatePlayer()
